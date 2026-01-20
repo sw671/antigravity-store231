@@ -1,0 +1,185 @@
+# Gemini/Agent 4-Level Architecture Framework
+
+## Overview
+You operate within a 4-level architecture that separates concerns to maximize reliability and scalability.
+
+---
+
+## The 4-Level Architecture
+
+### Level 1: Command (GEMINI.md)
+- High-level agent personality and mission
+- Overall project goals and decision-making principles
+- The "brain" that guides everything else
+
+### Level 2: Operations (/ops/)
+- Specific workflow instructions and procedures (previously "directives")
+- Step-by-step guides for different tasks
+- The "playbook" for how things get done
+- Defined in Markdown files
+
+### Level 3: Resources (/resources/)
+- Executable scripts, automations, and tools
+- Reusable code modules and functions
+- The "toolbox" of actual capabilities
+- Python scripts defined here
+- Environment variables are loaded from '/env/'env
+
+### Level 4: Environment (/env/)
+- System files, configs, and infrastructure
+- /env/tmp/ — Temporary processing files
+- /env/logs/ — Logs and outputs
+- /env/assets/ — Static assets (templates, images)
+- /env/.env — Environment variables
+- The "foundation" that everything runs on
+
+---
+
+## Operating Principles
+
+### Principle 1: Check for tools first
+Before writing a script, check '/resources/' per your operation guide. Only create new scripts if none exist.
+
+### Principle 2: Self-anneal when things break
+- Read error message and stack trace
+- Fix the script and test it again
+- Update the operation guide with what you learned
+- Example: you hit an API rate limit → insert script → test → update operation
+
+### Principle 3: Update operations as you learn
+Operations ('/ops/') are living documents. When you discover API constraints, better approaches, common errors, or timing expectations—update the document. Don't create or overwrite without asking.
+
+### Principle 4: Signal task completion
+Before you finish a major task, run a chime or notify the user explicitly.
+
+---
+
+## File Organization
+
+### Directory structure
+- /env/tmp/ — All intermediate files. Never commit, always regenerated
+- /resources/ — Python scripts (the deterministic tools)
+- /ops/ — SOPs in Markdown (the instruction set)
+- /env/ — Configs, env vars, and assets
+
+### Key principle: Local files are only for processing
+Deliverables live in cloud services or specific output folders. Everything in /env/tmp/ can be deleted and regenerated.
+
+---
+
+## Workspace Setup Prompt
+
+Copy and paste the following prompt into a new Gemini/Agent session to set up your workspace from scratch:
+
+---
+
+### Structure Definition
+
+The workspace must be organized into four distinct levels:
+
+- **Level 1: Command (GEMINI.md)**
+  - This file sits in the root
+  - It contains the high-level mission, architecture definition, and operating principles
+  
+- **Level 2: Operations (/ops/)**
+  - Directory for Standard Operating Procedures (SOPs) and workflows (markdown files)
+  - Formally known as "directives"
+  
+- **Level 3: Resources (/resources/)**
+  - Directory for Python scripts, tools, and automation code
+  - Formally known as "execution"
+  
+- **Level 4: Environment (/env/)**
+  - Directory for configuration, environment variables and infrastructure
+  - Must contain subdirectories: /tmp/, /logs/, /assets/
+  - Must contain /env and credentials.json (optional)
+
+### Action Items
+
+**Step 1: Create Directories**
+
+Run commands to create the following directory structure:
+- /ops/
+- /resources/
+- /env/
+- /env/tmp/
+- /env/logs/
+- /env/assets/
+
+**Step 2: Initialize GEMINI.md**
+
+Create a file named "GEMINI.md" in the root directory with the following content:
+
+---
+markdown
+# Agent Instructions
+
+You operate with a 4-level architecture that separates concerns to maximize reliability and scalability.
+
+## The 4-Level Architecture
+
+**Level 1: Command (GEMINI.md)**
+- High-level agent personality and mission
+- Overall project goals and decision-making principles
+
+**Level 2: Operations (/ops/)**
+- Directory for Standard Operating Procedures (SOPs) and workflows (markdown files)
+- Formally known as "directives"
+
+**Level 3: Resources (/resources/)**
+- Directory for Python scripts, tools, and automation code
+- Formally known as "execution"
+
+**Level 4: Environment (/env/)**
+- System files, configs, and infrastructure
+- /env/tmp/ — Temporary processing files
+- /env/logs/ — Logs and outputs
+- /env/assets/ — Static assets (templates, images)
+- /env/.env — Environment variables
+- /env/credentials.json — Google OAuth credentials (required files, in .gitignore)
+
+## Operating Principles
+
+**1. Check for tools first**
+Before writing a script, check '/resources/' per your operation guide. Only create new scripts if none exist.
+
+**2. Self-anneal when things break**
+- Read error message and stack trace
+- Fix the script and test it again
+- Update the operation guide with what you learned
+- Example: you hit an API rate limit → insert script → test → update operation
+
+**3. Update operations as you learn**
+Operations ('/ops/') are living documents. When you discover API constraints, better approaches, common errors, or timing expectations—update the document. Don't create or overwrite without asking.
+
+**4. Signal task completion**
+Before you finish a major task, run a chime or notify the user explicitly.
+
+## File Organization
+
+**Directory structure**
+- /env/tmp/ — All intermediate files. Never commit, always regenerated
+- /resources/ — Python scripts (the deterministic tools)
+- /ops/ — SOPs in Markdown (the instruction set)
+- /env/ — Configs, env vars, and assets
+
+**Key principle**
+Local files are only for processing. Deliverables live in cloud services or specific output folders. Everything in /env/tmp/ can be deleted and regenerated.
+
+---
+
+### Step 3: Confirmation
+
+Once done, list the directory structure to confirm everything is set up correctly.
+
+---
+
+## Summary
+
+You sit between human intent (ops) and deterministic execution (resources). Read instructions, make decisions, call tools, handle errors, continuously improve the system.
+
+Be pragmatic. Be reliable. Self-anneal.
+
+---
+
+END OF DOCUMENT
