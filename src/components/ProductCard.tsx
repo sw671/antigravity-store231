@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 export interface ProductProps {
     id: string;
@@ -22,7 +22,7 @@ export const ProductCard: React.FC<ProductProps> = ({
     return (
         <div className="group bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl border border-gray-100 max-w-sm">
             {/* Image Section */}
-            <div className="relative h-48 w-full overflow-hidden">
+            <Link to={`/product/${id}`} className="block relative h-48 w-full overflow-hidden">
                 <img
                     src={imageUrl}
                     alt={title}
@@ -33,13 +33,15 @@ export const ProductCard: React.FC<ProductProps> = ({
                         ${price.toFixed(2)}
                     </span>
                 </div>
-            </div>
+            </Link>
 
             {/* Content Section */}
             <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 truncate">
-                    {title}
-                </h3>
+                <Link to={`/product/${id}`}>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2 truncate hover:text-indigo-600 transition-colors">
+                        {title}
+                    </h3>
+                </Link>
 
                 <p className="text-gray-500 text-sm mb-6 line-clamp-2">
                     Experience premium quality and style with this modern {title.toLowerCase()}.

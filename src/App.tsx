@@ -1,10 +1,22 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import ProductDemo from './ProductDemo'
+import ProductDetails from './components/ProductDetails'
+import Navbar from './components/Navbar'
+import { CartProvider } from './context/CartContext'
 
 function App() {
   return (
-    <div className="w-full">
-      <ProductDemo />
-    </div>
+    <CartProvider>
+      <BrowserRouter>
+        <div className="w-full min-h-screen bg-gray-50 uppercase-links">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<ProductDemo />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+    </CartProvider>
   )
 }
 
