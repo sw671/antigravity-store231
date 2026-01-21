@@ -34,7 +34,10 @@ const ProductDemo: React.FC = () => {
     }, []);
 
     const handleAddToCart = (id: string) => {
-        addToCart(id);
+        const product = products.find(p => p.id === id);
+        if (product) {
+            addToCart(product);
+        }
     };
 
     return (

@@ -101,7 +101,12 @@ const ProductDetails: React.FC = () => {
 
                         <div className="flex flex-col sm:flex-row gap-4">
                             <button
-                                onClick={() => addToCart(product.id.toString())}
+                                onClick={() => product && addToCart({
+                                    id: product.id.toString(),
+                                    title: product.title,
+                                    price: product.price,
+                                    imageUrl: product.image
+                                })}
                                 className="flex-1 py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
