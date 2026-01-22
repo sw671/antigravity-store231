@@ -1,9 +1,14 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
+
+
 
 const Navbar: React.FC = () => {
     const { cartCount } = useCart();
+    const { user, signOut } = useAuth();
     const navigate = useNavigate();
+
 
     return (
         <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -56,6 +61,43 @@ const Navbar: React.FC = () => {
                                 </span>
                             )}
                         </div>
+
+                        {user && (
+                            <Link
+                                to="/orders"
+                                className="hidden md:flex items-center gap-2 text-sm font-bold text-gray-700 hover:text-indigo-600 transition-colors"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                My Orders
+                            </Link>
+                        )}
+
+                        {/* Auth Section */}
+                        <div className="flex items-center gap-4 pl-4 border-l border-gray-100">
+                            {user ? (
+                                <div className="flex items-center gap-4">
+                                    <span className="hidden md:block text-sm font-medium text-gray-600">
+                                        {user.email}
+                                    </span>
+                                    <button
+                                        onClick={() => signOut()}
+                                        className="px-4 py-2 text-sm font-bold text-gray-700 bg-gray-100 rounded-xl hover:bg-gray-200 transition-all"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    onClick={() => navigate('/login')}
+                                    className="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg transition-all transform hover:scale-105 active:scale-95"
+                                >
+                                    Login
+                                </button>
+                            )}
+                        </div>
+
                     </div>
                 </div>
             </div>

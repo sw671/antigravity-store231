@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { supabase } from '../lib/supabaseClient';
+
 
 const Checkout: React.FC = () => {
     const { cartItems, cartCount, totalPrice, clearCart } = useCart();
@@ -12,7 +14,9 @@ const Checkout: React.FC = () => {
         address: '',
     });
     const [error, setError] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -20,7 +24,7 @@ const Checkout: React.FC = () => {
         if (error) setError(null); // Clear error when user types
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         // Validation
@@ -29,10 +33,35 @@ const Checkout: React.FC = () => {
             return;
         }
 
-        // Success Flow
-        setIsSubmitted(true);
-        clearCart();
+        setIsSubmitting(true);
+        setError(null);
+
+        try {
+            const { error: supabaseError } = await supabase
+                .from('orders')
+                .insert([
+                    {
+                        customer_name: formData.name,
+                        customer_email: formData.email,
+                        total_price: totalPrice,
+                        items: cartItems, // Supabase handles JSONB
+                    },
+                ]);
+
+            if (supabaseError) {
+                throw new Error(supabaseError.message);
+            }
+
+            // Success Flow
+            setIsSubmitted(true);
+            clearCart();
+        } catch (err: any) {
+            setError(err.message || 'An error occurred while placing your order. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
+
 
     if (isSubmitted) {
         return (
@@ -127,10 +156,13 @@ const Checkout: React.FC = () => {
                         )}
                         <button
                             type="submit"
-                            className="w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 active:scale-95"
+                            disabled={isSubmitting}
+                            className={`w-full py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 active:scale-95 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                                }`}
                         >
-                            Place Order
+                            {isSubmitting ? 'Processing...' : 'Place Order'}
                         </button>
+
                     </form>
                 </div>
 
